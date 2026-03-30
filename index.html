@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grand Royale Casino</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Header / Navigation -->
+        <header>
+            <div class="logo">
+                <h1>GRAND ROYALE</h1>
+                <span class="subtitle">CASINO & RESORT</span>
+            </div>
+            <div class="user-info">
+                <div class="balance-container">
+                    <span class="currency">$</span>
+                    <span id="user-balance">5000</span>
+                </div>
+                <button class="cashier-btn" onclick="app.openCashier()">Cajero</button>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main id="main-content">
+            <!-- Lobby View (Default) -->
+            <section id="lobby" class="view active">
+                <div class="hero">
+                    <h2>Bienvenido al Casino</h2>
+                    <p>Elige tu juego y prueba tu suerte.</p>
+                </div>
+                
+                <div class="games-grid">
+                    <!-- Slots Card -->
+                    <div class="game-card" onclick="app.openGame('slots')">
+                        <div class="card-image slots-bg">
+                            <span class="badge">HOT</span>
+                        </div>
+                        <div class="card-content">
+                            <h3>Tragamonedas 777</h3>
+                            <p>Gana el premio mayor con alinear 3 sietes.</p>
+                            <button class="play-btn">Jugar Ahora</button>
+                        </div>
+                    </div>
+
+                    <!-- Blackjack Card -->
+                    <div class="game-card" onclick="app.openGame('blackjack')">
+                        <div class="card-image bj-bg"></div>
+                        <div class="card-content">
+                            <h3>Blackjack (21)</h3>
+                            <p>Vence al crupier sin pasarte de 21.</p>
+                            <button class="play-btn">Jugar Ahora</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Roulette Card (Coming soon) -->
+                    <div class="game-card" onclick="app.openGame('roulette')">
+                        <div class="card-image roulette-bg"></div>
+                        <div class="card-content">
+                            <h3>Ruleta</h3>
+                            <p>Apuesta a tu número o color favorito.</p>
+                            <button class="play-btn">Jugar Ahora</button>
+                        </div>
+                    </div>
+
+                    <!-- Sports Card -->
+                    <div class="game-card" onclick="app.openGame('sports')">
+                        <div class="card-image sports-bg" style="background: linear-gradient(45deg, #1e3c72, #2a5298);"></div>
+                        <div class="card-content">
+                            <h3>Apuestas Deportivas</h3>
+                            <p>Partidos diarios con las mejores cuotas.</p>
+                            <button class="play-btn">Apostar Ahora</button>
+                        </div>
+                    </div>
+
+                    <!-- Video Poker Card -->
+                    <div class="game-card" onclick="app.openGame('videopoker')">
+                        <div class="card-image vpoker-bg" style="background: linear-gradient(45deg, #8E0E00, #1F1C18);"></div>
+                        <div class="card-content">
+                            <h3>Video Poker</h3>
+                            <p>Jacks or Better. Construye tu mejor mano de 5 cartas.</p>
+                            <button class="play-btn">Jugar Ahora</button>
+                        </div>
+                    </div>
+
+                    <!-- Texas Holdem Card -->
+                    <div class="game-card" onclick="app.openGame('poker')">
+                        <div class="card-image vpoker-bg" style="background: linear-gradient(45deg, #11998e, #38ef7d);"></div>
+                        <div class="card-content">
+                            <h3>Texas Hold'em</h3>
+                            <p>Mesa de 4 jugadores. Riega, farolea y llévate el bote.</p>
+                            <button class="play-btn">Jugar Ahora</button>
+                        </div>
+                    </div>
+
+                    <!-- Craps Card -->
+                    <div class="game-card" onclick="app.openGame('craps')">
+                        <div class="card-image craps-bg" style="background: linear-gradient(45deg, #FF416C, #FF4B2B);"></div>
+                        <div class="card-content">
+                            <h3>Dados (Craps)</h3>
+                            <p>Tira los dados de la suerte en la mesa clásica.</p>
+                            <button class="play-btn">Jugar Ahora</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slots Game View -->
+            <section id="slots-game" class="view">
+                <button class="back-btn" onclick="app.showLobby()">← Volver al Lobby</button>
+                <div class="game-container">
+                    <h2>Tragamonedas 777</h2>
+                    <div class="slot-machine">
+                        <div class="reels">
+                            <div class="reel" id="reel1">🍒</div>
+                            <div class="reel" id="reel2">🍋</div>
+                            <div class="reel" id="reel3">🔔</div>
+                        </div>
+                        <div class="controls">
+                            <div class="bet-controls">
+                                <label>Apuesta:</label>
+                                <input type="number" id="slot-bet" value="50" min="10" step="10">
+                            </div>
+                            <button id="spin-btn" class="action-btn spin-btn" onclick="slots.spin()">GIRAR</button>
+                        </div>
+                        <div id="slot-message" class="game-message">¡Haz tu apuesta y gira!</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Blackjack Game View -->
+            <section id="blackjack-game" class="view">
+                <button class="back-btn" onclick="app.showLobby()">← Volver al Lobby</button>
+                <div class="game-container">
+                    <h2>Blackjack</h2>
+                    <div class="blackjack-table">
+                        <div class="dealer-area">
+                            <h3>Crupier - Puntuación: <span id="dealer-score">0</span></h3>
+                            <div id="dealer-cards" class="cards-container"></div>
+                        </div>
+                        
+                        <div id="bj-message" class="game-message">Haz tu apuesta para empezar</div>
+
+                        <div class="player-area">
+                            <h3>Tus Cartas</h3>
+                            <div id="player-cards" class="cards-container"></div>
+                        </div>
+                        
+                        <div class="bj-controls">
+                            <div id="bj-bet-area" class="bet-area">
+                                <label>Apuesta:</label>
+                                <input type="number" id="bj-bet" value="100" min="10" step="10">
+                                <button onclick="blackjack.deal()" class="action-btn">Repartir</button>
+                            </div>
+                            <div id="bj-action-area" class="action-area hidden">
+                                <button onclick="blackjack.hit()" class="action-btn hit-btn">Pedir Carta</button>
+                                <button onclick="blackjack.stand()" class="action-btn stand-btn">Plantarse</button>
+                                <button id="bj-double-btn" onclick="blackjack.doubleDown()" class="action-btn" style="background:#f1c40f; color:#000;">Doblar</button>
+                                <button id="bj-split-btn" onclick="blackjack.split()" class="action-btn" style="background:#9b59b6;">Dividir</button>
+                            </div>
+                        </div>
+                    </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Roulette Game View -->
+            <section id="roulette-game" class="view">
+                <button class="back-btn" onclick="app.showLobby()">← Volver al Lobby</button>
+                <div class="game-container roulette-container">
+                    <h2>Ruleta Europea</h2>
+                    <div id="roulette-wheel" class="roulette-wheel">0</div>
+                    <div id="roulette-message" class="game-message">Haz tu apuesta en el tablero.</div>
+                    
+                    <div class="roulette-table">
+                        <div class="roulette-controls">
+                            <label>Ficha:</label>
+                            <input type="number" id="roulette-bet" value="50" min="10" step="10">
+                            <button class="action-btn" onclick="roulette.spin()">Girar Ruleta!</button>
+                            <button class="action-btn btn-secondary" onclick="roulette.clearBets()">Limpiar Apuestas</button>
+                        </div>
+                        <div class="roulette-board" id="roulette-board">
+                           <!-- Generado por JS -->
+                        </div>
+                        <div class="roulette-total-bet">Apuesta total: $<span id="roulette-total-label">0</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sports Game View -->
+            <section id="sports-game" class="view">
+                <button class="back-btn" onclick="app.showLobby()">← Volver al Lobby</button>
+                <div class="game-container sports-container">
+                    <h2>Apuestas Deportivas Multi-Mundo</h2>
+                    <div id="sports-message" class="game-message">Simula apuestas de todo tipo de ligas mundiales a diario.</div>
+                    
+                    <div id="sports-filters" class="sports-filters"></div>
+
+                    <div class="sports-layout">
+                        <div class="matches-list" id="matches-list">
+                            <!-- Generado por JS -->
+                        </div>
+                        <div class="bet-slip">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px;">
+                                <h3 style="margin:0;">Boleto de Apuesta</h3>
+                                <button onclick="sports.clearSlip()" style="background:transparent; border:none; color:var(--accent-red); cursor:pointer; font-weight:bold; font-size:0.9rem;">Limpiar</button>
+                            </div>
+                            <div id="selected-bet-info">Ninguna selección</div>
+                            <div class="sports-bet-controls" style="margin-top:20px;">
+                                <label>Monto a apostar:</label>
+                                <input type="number" id="sports-bet-amount" value="100" min="10" step="10" style="width:100%; margin-bottom: 10px;">
+                                <div><small>Ganancia Potencial: $<span id="sports-potential-win">0</span></small></div>
+                                <button class="action-btn" style="width:100%; margin-top:10px;" onclick="sports.placeBet()">Apostar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Video Poker View -->
+            <section id="videopoker-game" class="view">
+                <button class="back-btn" onclick="app.showLobby()">← Volver al Lobby</button>
+                <div class="game-container vpoker-container">
+                    <h2>Video Poker (Jacks or Better)</h2>
+                    <div class="poker-paytable" id="poker-paytable">
+                        <div class="paytable-row"><span>Royal Flush</span> <span>x800</span></div>
+                        <div class="paytable-row"><span>Straight Flush</span> <span>x50</span></div>
+                        <div class="paytable-row"><span>4 of a Kind</span> <span>x25</span></div>
+                        <div class="paytable-row"><span>Full House</span> <span>x9</span></div>
+                        <div class="paytable-row"><span>Flush</span> <span>x6</span></div>
+                        <div class="paytable-row"><span>Straight</span> <span>x4</span></div>
+                        <div class="paytable-row"><span>3 of a Kind</span> <span>x3</span></div>
+                        <div class="paytable-row"><span>2 Pairs</span> <span>x2</span></div>
+                        <div class="paytable-row"><span>Jacks or Better</span> <span>x1</span></div>
+                    </div>
+                    
+                    <div class="poker-table">
+                        <div id="poker-cards" class="cards-container poker-cards">
+                            <!-- Cards go here -->
+                        </div>
+                        
+                        <div id="vp-message" class="game-message">Haz tu apuesta y reparte</div>
+                        
+                        <div class="vpoker-controls">
+                            <label>Apuesta:</label>
+                            <input type="number" id="vpoker-bet" value="50" min="10" step="10">
+                            <button id="vp-deal-btn" class="action-btn" onclick="videopoker.deal()">Repartir</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Texas Holdem View (Multiplayer) -->
+            <section id="poker-game" class="view">
+                <button class="back-btn" onclick="app.showLobby()">← Volver al Lobby</button>
+                <div class="game-container vpoker-container">
+                    <h2>Texas Hold'em (Mesa de 4 Jugadores)</h2>
+                    
+                    <div class="poker-table" style="position:relative; padding: 20px;">
+                        
+                        <!-- Opponents Area -->
+                        <div id="texasholdem-opponents" style="display:flex; justify-content:space-around; align-items:flex-start; margin-bottom: 20px;">
+                            <!-- Top players dynamically generated -->
+                        </div>
+
+                        <!-- Pot Area -->
+                        <div style="text-align: center; margin: 20px 0; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 10px; border: 1px solid var(--primary-color);">
+                            <h3 style="color: var(--primary-color); font-size: 1.5rem;">Bote Total: $<span id="texasholdem-pot">0</span></h3>
+                            <div id="texasholdem-message" style="color:white; margin-top: 5px;">Haz tu Ante para sentar a los jugadores en la mesa.</div>
+                        </div>
+
+                        <!-- Community Cards -->
+                        <div style="text-align: center; margin-bottom: 30px;">
+                            <h3 style="color:white; font-size: 1rem;">Cartas Comunitarias</h3>
+                            <div id="texasholdem-community-cards" class="cards-container poker-cards" style="min-height: 130px; justify-content:center; gap: 10px;">
+                                <!-- Flop, Turn, River -->
+                            </div>
+                        </div>
+                        
+                        <!-- Player Area -->
+                        <div id="texasholdem-hero" style="display:flex; justify-content:center; margin-top: 20px;">
+                            <!-- Hero player dynamically generated -->
+                        </div>
+                        
+                        <!-- Controls -->
+                        <div class="vpoker-controls">
+                            <div id="texasholdem-ante-area">
+                                <label>Ante (Ciega):</label>
+                                <input type="number" id="texasholdem-bet" value="50" min="10" step="10" style="width:100px;">
+                                <button id="texasholdem-deal-btn" class="action-btn" onclick="texasholdem.deal()">Tomar Asiento</button>
+                            </div>
+
+                            <div id="texasholdem-action-area" class="hidden" style="display:flex; gap:10px;">
+                                <button class="action-btn" style="background:#e74c3c;" onclick="texasholdem.fold()">No Ir (Fold)</button>
+                                <button class="action-btn" style="background:#3498db;" onclick="texasholdem.checkCall()" id="texasholdem-call-btn">Pasar / Igualar</button>
+                                <button class="action-btn" style="background:#2ecc71;" onclick="texasholdem.raise()">Subir (Raise)</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Craps View -->
+            <section id="craps-game" class="view">
+                <button class="back-btn" onclick="app.showLobby()">← Volver al Lobby</button>
+                <div class="game-container craps-container">
+                    <h2>Mesa de Dados (Craps)</h2>
+                    
+                    <div class="craps-play-area">
+                        <div class="dice-container">
+                            <div class="die" id="die1">⚀</div>
+                            <div class="die" id="die2">⚀</div>
+                        </div>
+                    </div>
+                    <div id="craps-message" class="game-message">Haz una apuesta a Pass Line y tira.</div>
+                    
+                    <div class="craps-table">
+                        <div class="craps-bet-section">
+                            <label>Apuesta Pass Line (1:1):</label>
+                            <input type="number" id="craps-bet" value="50" min="10" step="10">
+                            <div style="margin-top: 15px;">
+                                Point (Punto actual): <strong id="craps-point" style="font-size: 1.5rem; color: var(--primary-color);">Off</strong>
+                            </div>
+                        </div>
+                        <div class="craps-controls">
+                            <button id="craps-roll-btn" class="action-btn" onclick="craps.roll()">Apostar y Tirar Dados</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Cashier Modal -->
+        <div id="cashier-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal" onclick="app.closeCashier()">&times;</span>
+                <h2>Cajero del Banco</h2>
+                <div class="cashier-info">
+                    <p>Balance actual: $<span id="cashier-balance">0</span></p>
+                </div>
+                <div class="cashier-form">
+                    <label>Cantidad en Fichas ($):</label>
+                    <input type="number" id="cashier-amount" min="10" step="10" placeholder="Ej: 1000">
+                    <div class="cashier-actions">
+                        <button onclick="app.processTransaction('deposit')" class="action-btn deposit-btn">Depositar</button>
+                        <button onclick="app.processTransaction('withdraw')" class="action-btn withdraw-btn">Retirar</button>
+                    </div>
+                </div>
+                <div id="cashier-message" class="cashier-message"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+    <script src="js/slots.js"></script>
+    <script src="js/blackjack.js"></script>
+    <script src="js/roulette.js"></script>
+    <script src="js/sports.js"></script>
+    <script src="js/videopoker.js"></script>
+    <script src="js/texasholdem.js"></script>
+    <script src="js/craps.js"></script>
+</body>
+</html>
